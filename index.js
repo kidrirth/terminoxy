@@ -10,7 +10,7 @@ $(function() {
 
     const settings = {
         defaultPeriodTime: 30,
-        defaultPauseTime: 15,
+        defaultPauseTime: 10,
     };
 
     const minutesRangeInput = $('#minutesRange');
@@ -182,15 +182,20 @@ $(function() {
                 $(audioWarning)[0].play();
                 break;
             case 'suicide':
-                let text = userText.val();
-                if (!text.length || wordDeletionTimer || !timer) {
+                if (!userText.val().length || wordDeletionTimer || !timer) {
                     return;
                 }
                 wordDeletionTimer = setInterval(function() {
-                    const kamikazeSymbolIndex = getRandomInt(text.length - 1);
+                    let text = userText.val();
+                    const kamikazeSymbolIndex = getRandomInt(text.length - 2);
                     const emoji =  emojisSet[getRandomInt(emojisSet.length - 1)]
-                    text = text.substring(0, kamikazeSymbolIndex) + emoji + text.substring(kamikazeSymbolIndex + 1);
-                    userText.val(text);
+                    
+                    const runes = Array.from(text);
+                    runes[kamikazeSymbolIndex] = emoji;
+
+                    // text = text.substring(0, kamikazeSymbolIndex) + emoji + text.substring(kamikazeSymbolIndex + 1);
+                    // userText.val(text);
+                    userText.val(runes.join(""));
                 }, 1000);
                 break;
             default:
