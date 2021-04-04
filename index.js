@@ -139,6 +139,8 @@ $(function() {
         startButton.hide();
         finishButton.show();
         finishButton.prop("disabled", false);
+        exportButton.prop("disabled", false);
+        copy.prop("disabled", false);
         userText.val('');
         userText.prop('disabled', false);
     }
