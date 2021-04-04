@@ -40,10 +40,8 @@ $(function() {
         minutesRangeInput.slider({
             range: "min",
             value: 10,
-            step: 1,
-            min: 1,
-            // step: 5,
-            // min: 5,
+            step: 5,
+            min: 5,
             max: 100,
             
             slide: function (event, ui) {
