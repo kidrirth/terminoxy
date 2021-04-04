@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="./index.css" rel="stylesheet">
+
+   
+
+    <title>Terminoxy</title>
+  </head>
+  <body>
+    
+    <div class="container w-100 h-100">
+        <div class="row align-items-center h-100">
+         
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                <h1 class="alert alert-primary">Личный редактор одного писателя (шоб всё писалось)</h1>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <h4>НАСТРОЕЧКИ</h4>
+                <form class="row" id="appSettings">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <label for="minutesRange" class="form-label">Время работы:</label>
+                            <div id="minutesRange"></div>
+                        </div>
+                        <div class="row">
+                            <label for="pauseRange" class="form-label">Время допустимой паузы:</label>
+                            <div id="pauseRange"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        Режим
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="appMode" id="appModeWarning" value="warning" checked>
+                            <label class="form-check-label" for="appModeWarning">
+                              алярм
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="appMode" id="appModeSuicide" value="suicide">
+                            <label class="form-check-label" for="appModeSuicide">
+                              шо, посоны, суецыд?
+                            </label>
+                          </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="textExport" type="button" class="btn btn-success">Сохранить в .txt</button>
+                        <!-- <a id="textExport" type="button" class="btn btn-success">Сохранить в .txt</a> -->
+                        <!-- <a style="display: none;" href="#"></a> -->
+                        <button id ="textCopy" type="button" class="btn btn-info">Копировать всё</button>
+
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <button id="appStart" type="button" class="btn btn-primary">Начать<br>(очистит весь текст)</button>
+                        <button id="appFinish" type="button" class="btn btn-warning" style="display: none;">Закончить<br>(редактировать будет больше нельзя)</button>
+                    </div>
+
+                    <div class="col-md-1">
+                        <!-- <div id="countdown"></div>> -->
+                        <div class="row justify-content-center border rounded-pill" id="countdown"></div>
+                    </div>
+
+                </form>
+
+                
+            </div>
+            <div class="row p-3">
+                <!-- <div class="row justify-content-center border rounded-pill" id="countdown">
+                    <textarea>
+
+                    </textarea>
+                </div> -->
+
+                <textarea id="userText">
+
+                </textarea>
+
+                <audio id="audioWarning">
+                    <source src="./alarm.wav" type="audio/wav">
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous">
+    </script>
+
+    <script src="./notify.min.js"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+    -->
+
+    <script src="./index.js"></script>
+
+  </body>
+</html>
