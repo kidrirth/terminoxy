@@ -1,5 +1,6 @@
 $(function() {
     let timer = null;
+    let isPaused = false;
     let secondsSinceLastLetter = 0;
     let isPunishmentInPlace = false;
     let wordDeletionTimer = null;
@@ -20,12 +21,16 @@ $(function() {
 
     const settingsForms = $('#appSettings');
     const startButton = $('#appStart');
+    const restoreButton = $('#appRestore');
     const finishButton = $('#appFinish');
+    const pauseButton = $('#appPause');
+    const continueButton = $('#appContinue');
     
     const exportButton = $('#textExport');
     const copyButton = $('#textCopy');
 
     const userText = $('#userText');
+    const userTextRestoreCopy = $('#textRestoreCopy');
     const audioWarning = $('#audioWarning');
 
     function getRandomInt(max) {
@@ -106,13 +111,35 @@ $(function() {
     
         startButton.click(function (e) { 
             e.preventDefault();
-            
             startApp();
         });
 
+        continueButton.click(function (e) { 
+            e.preventDefault();
+            continueButton.hide();
+            pauseButton.show();
+            userText.prop('disabled', false);
+            isPaused = false;
+        });
+
+        pauseButton.click(function (e) { 
+            e.preventDefault();
+            pauseButton.hide();
+            continueButton.show();
+            userText.prop('disabled', true);
+            isPaused = true;
+        });
+
+        restoreButton.click(function (e) { 
+            e.preventDefault();
+            userText.val(userTextRestoreCopy.val());
+            userTextRestoreCopy.val('');
+            restoreButton.hide();
+        });
 
         userText.on("change keyup paste", function() {
             secondsSinceLastLetter = 0;
+            restoreButton.hide();
             stopPunishment();
         });
     }
@@ -126,8 +153,11 @@ $(function() {
         minutesRangeInput.slider("enable");
         pauseRangeInput.slider("enable");
         finishButton.hide();
+        pauseButton.hide();
+        continueButton.hide();
         startButton.show();
         userText.prop('disabled', true);
+        restoreButton.hide();
     }
 
     const uiOnAppStart = () => {
@@ -136,17 +166,30 @@ $(function() {
         pauseRangeInput.slider("disable");
         startButton.hide();
         finishButton.show();
+        pauseButton.show();
+        pauseButton.prop("disabled", false);
+        continueButton.prop("disabled", false);
         finishButton.prop("disabled", false);
         exportButton.prop("disabled", false);
         copyButton.prop("disabled", false);
+        restoreButton.prop("disabled", false);
         userText.val('');
         userText.prop('disabled', false);
+
+        if (userTextRestoreCopy.val()) {
+            restoreButton.show();
+        }
     }
 
     const startCountdown = () => {
         stopCountdown();
-        const countDownTime = new Date().getTime() + minutesRangeInput.slider('value') * 60 * 1000;
+        let countDownTime = new Date().getTime() + minutesRangeInput.slider('value') * 60 * 1000;
         timer = setInterval(function() {
+            console.log(countDownTime);
+            if (isPaused) {
+                countDownTime += 1 * 1000;
+                return;
+            }
             const distance = countDownTime - new Date().getTime();
 
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -173,6 +216,8 @@ $(function() {
         uiOnAppStop();
         stopCountdown();
         stopPunishment();
+        userTextRestoreCopy.val(userText.val());
+        console.log('data in copy:', userTextRestoreCopy.val());
     } 
 
     const startPunishment = (appMode) => {
@@ -186,6 +231,9 @@ $(function() {
                     return;
                 }
                 wordDeletionTimer = setInterval(function() {
+                    if (isPaused) {
+                        return;
+                    }
                     let text = userText.val();
                     const kamikazeSymbolIndex = getRandomInt(text.length - 2);
                     const emoji =  emojisSet[getRandomInt(emojisSet.length - 1)]
@@ -217,6 +265,9 @@ $(function() {
 
     const handleTyping = (appMode) => {
         const typingTimer = setInterval(function() {
+            if (isPaused) {
+                return;
+            }
             if (secondsSinceLastLetter > pauseRangeInput.slider('value') - 1) {
                 startPunishment(appMode);
             }
@@ -230,6 +281,12 @@ $(function() {
     }
 
     const startApp = () => {
+        timer = null;
+        isPaused = false;
+        secondsSinceLastLetter = 0;
+        isPunishmentInPlace = false;
+        wordDeletionTimer = null;
+
         uiOnAppStart();
         
         const appMode = $('#appSettings input[name="appMode"]:checked').val();

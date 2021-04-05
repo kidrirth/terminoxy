@@ -58,8 +58,6 @@
 
                     <div class="col-md-2">
                         <button id="textExport" type="button" class="btn btn-success">Сохранить в .txt</button>
-                        <!-- <a id="textExport" type="button" class="btn btn-success">Сохранить в .txt</a> -->
-                        <!-- <a style="display: none;" href="#"></a> -->
                         <button id ="textCopy" type="button" class="btn btn-info">Копировать всё</button>
 
 
@@ -68,11 +66,13 @@
                     <div class="col-md-2">
                         <button id="appStart" type="button" class="btn btn-primary">Начать<br>(очистит весь текст)</button>
                         <button id="appFinish" type="button" class="btn btn-warning" style="display: none;">Закончить<br>(редактировать будет больше нельзя)</button>
+                        <button id="appPause" type="button" class="btn btn-info" style="display: none;">Пауза</button>
+                        <button id="appContinue" type="button" class="btn btn-info" style="display: none;">Продолжить</button>
                     </div>
 
                     <div class="col-md-1">
-                        <!-- <div id="countdown"></div>> -->
                         <div class="row justify-content-center border rounded-pill" id="countdown"></div>
+                        <button id="appRestore" type="button" class="btn btn-primary" style="display: none;">Восстановить предыдущую копию</button>
                     </div>
 
                 </form>
@@ -80,15 +80,8 @@
                 
             </div>
             <div class="row p-3">
-                <!-- <div class="row justify-content-center border rounded-pill" id="countdown">
-                    <textarea>
-
-                    </textarea>
-                </div> -->
-
-                <textarea id="userText">
-
-                </textarea>
+                <textarea id="userText"></textarea>
+                <textarea id="textRestoreCopy" style="display: none;"></textarea>
 
                 <audio id="audioWarning">
                     <source src="./alarm.wav" type="audio/wav">
