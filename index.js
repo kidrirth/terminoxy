@@ -117,7 +117,7 @@ $(function() {
         continueButton.click(function (e) { 
             e.preventDefault();
             continueButton.hide();
-            pauseButton.show();
+            // pauseButton.show(); // use pause only once per session
             userText.prop('disabled', false);
             isPaused = false;
         });
