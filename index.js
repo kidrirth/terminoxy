@@ -97,10 +97,11 @@ $(function() {
     
         copyButton.click(function (e) { 
             e.preventDefault();
+            const isDisabled = userText.prop("disabled");
             userText.prop("disabled", false);
             userText.select();
             document.execCommand('copy');
-            userText.prop("disabled", true);
+            userText.prop("disabled", isDisabled);
             copyButton.notify("Скопировано, лучше куда-нибудь сразу вставь!", "success");
         });
 
@@ -220,16 +221,33 @@ $(function() {
         console.log('data in copy:', userTextRestoreCopy.val());
     } 
 
-    const startPunishment = (appMode) => {
-        userText.css("border-color", "red");
+    const startWarning = (appMode) => {
         switch(appMode) {
             case 'warning':
+                break;
+            case 'suicide':
+                break;
+            case 'exterminatus':
+                userText.css("border-color", "yellow");
+                break;
+            default:
+                console.log('what the fu...', appMode);
+                break;
+        }
+    }
+
+
+    const startPunishment = (appMode) => {
+        switch(appMode) {
+            case 'warning':
+                userText.css("border-color", "red");
                 $(audioWarning)[0].play();
                 break;
             case 'suicide':
                 if (!userText.val().length || wordDeletionTimer || !timer) {
                     return;
                 }
+                userText.css("border-color", "red");
                 wordDeletionTimer = setInterval(function() {
                     if (isPaused) {
                         return;
@@ -240,14 +258,18 @@ $(function() {
                     
                     const runes = Array.from(text);
                     runes[kamikazeSymbolIndex] = emoji;
-
-                    // text = text.substring(0, kamikazeSymbolIndex) + emoji + text.substring(kamikazeSymbolIndex + 1);
-                    // userText.val(text);
                     userText.val(runes.join(""));
                 }, 1000);
                 break;
+            case 'exterminatus':
+                if (!userText.val().length || wordDeletionTimer || !timer) {
+                    return;
+                }
+                userText.css("border-color", "black");
+                userText.val('');
+                break;
             default:
-                console.log('what the fu...');
+                console.log('what the fu...', appMode);
                 break;
         }
         isPunishmentInPlace = true;
@@ -268,6 +290,11 @@ $(function() {
             if (isPaused) {
                 return;
             }
+
+            if (secondsSinceLastLetter > pauseRangeInput.slider('value') / 2) {
+                startWarning(appMode);
+            }
+
             if (secondsSinceLastLetter > pauseRangeInput.slider('value') - 1) {
                 startPunishment(appMode);
             }
